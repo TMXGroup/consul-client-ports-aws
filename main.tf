@@ -135,7 +135,7 @@ resource "aws_security_group_rule" "dns_interface_tcp" {
   source_security_group_id   = "${var.consul_sg_group}"
 }
 
-resource "aws_security_group_rule" "dns_interface_tcp" {
+resource "aws_security_group_rule" "dns_interface_tcp_internal" {
   count = "${var.create ? 1 : 0}"
 
   security_group_id = "${aws_security_group.consul_client.id}"
@@ -158,7 +158,7 @@ resource "aws_security_group_rule" "dns_interface_udp" {
   to_port           = 8600
   source_security_group_id   = "${var.consul_sg_group}"
 }
-resource "aws_security_group_rule" "dns_interface_udp" {
+resource "aws_security_group_rule" "dns_interface_udp_internal" {
   count = "${var.create ? 1 : 0}"
 
   security_group_id = "${aws_security_group.consul_client.id}"
@@ -180,7 +180,7 @@ resource "aws_security_group_rule" "outbound_tcp" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 # All outbound traffic - UDP.
-resource "aws_security_group_rule" "outbound_udp" {
+resource "aws_security_group_rule" "outbound_udp_internal" {
   count = "${var.create ? 1 : 0}"
 
   security_group_id = "${aws_security_group.consul_client.id}"
