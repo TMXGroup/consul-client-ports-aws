@@ -16,12 +16,13 @@ resource "aws_security_group" "consul_client" {
 resource "aws_security_group_rule" "serf_lan_tcp" {
   count = "${var.create ? 1 : 0}"
 
-  security_group_id = "${aws_security_group.consul_client.id}"
-  type              = "ingress"
-  protocol          = "tcp"
-  from_port         = 8301
-  to_port           = 8301
-  source_security_group_id   = "${var.consul_sg_group}"
+  security_group_id         = "${aws_security_group.consul_client.id}"
+  type                      = "ingress"
+  protocol                  = "tcp"
+  from_port                 = 8301
+  to_port                   = 8301
+  source_security_group_id  = "${var.consul_sg_group}"
+  description               = "Vault/Consul cluster SG"
 }
 resource "aws_security_group_rule" "serf_lan_tcp_internal" {
   count = "${var.create ? 1 : 0}"
@@ -32,6 +33,7 @@ resource "aws_security_group_rule" "serf_lan_tcp_internal" {
   from_port         = 8301
   to_port           = 8301
   source_security_group_id   = "${aws_security_group.consul_client.id}"
+  description               = "Vault/Consul internal cluster SG"
 }
 # Serf LAN (Default 8301) - UDP. This is used to handle gossip in the LAN. Required by all agents on TCP and UDP.
 resource "aws_security_group_rule" "serf_lan_udp" {
@@ -43,6 +45,7 @@ resource "aws_security_group_rule" "serf_lan_udp" {
   from_port         = 8301
   to_port           = 8301
   source_security_group_id   = "${var.consul_sg_group}"
+  description               = "Vault/Consul cluster SG"
 }
 resource "aws_security_group_rule" "serf_lan_udp_internal" {
   count = "${var.create ? 1 : 0}"
@@ -53,6 +56,7 @@ resource "aws_security_group_rule" "serf_lan_udp_internal" {
   from_port         = 8301
   to_port           = 8301
   source_security_group_id   = "${aws_security_group.consul_client.id}"
+  description               = "Vault/Consul internal cluster SG"
 }
 
 #Consul Connect Default ports - TCP
@@ -65,6 +69,7 @@ resource "aws_security_group_rule" "server_connect_tcp" {
   from_port         = 20000
   to_port           = 20255
   source_security_group_id   = "${var.consul_sg_group}"
+  description               = "Vault/Consul cluster SG"
 }
 resource "aws_security_group_rule" "server_connect_tcp_internal" {
   count = "${var.create ? 1 : 0}"
@@ -75,6 +80,7 @@ resource "aws_security_group_rule" "server_connect_tcp_internal" {
   from_port         = 20000
   to_port           = 20255
   source_security_group_id   = "${aws_security_group.consul_client.id}"
+  description               = "Vault/Consul internal cluster SG"
 }
 
 # CLI RPC (Default 8400) - TCP. This is used by all agents to handle RPC from the CLI on TCP only.
@@ -89,6 +95,7 @@ resource "aws_security_group_rule" "cli_rpc_tcp" {
   from_port         = 8400
   to_port           = 8400
   source_security_group_id   = "${var.consul_sg_group}"
+  description               = "Vault/Consul cluster SG"
 }
 resource "aws_security_group_rule" "cli_rpc_tcp_interanl" {
   count = "${var.create ? 1 : 0}"
@@ -99,6 +106,7 @@ resource "aws_security_group_rule" "cli_rpc_tcp_interanl" {
   from_port         = 8400
   to_port           = 8400
   source_security_group_id   = "${aws_security_group.consul_client.id}"
+  description               = "Internal consul cluster SG"
 }
 
 # HTTP API (Default 8500) - TCP. This is used by agents to talk to the HTTP API on TCP only.
@@ -111,6 +119,7 @@ resource "aws_security_group_rule" "http_api_tcp" {
   from_port         = 8500
   to_port           = 8500
   source_security_group_id   = "${var.consul_sg_group}"
+  description               = "Vault/Consul cluster SG"
 }
 resource "aws_security_group_rule" "http_api_tcp_internal" {
   count = "${var.create ? 1 : 0}"
@@ -121,6 +130,7 @@ resource "aws_security_group_rule" "http_api_tcp_internal" {
   from_port         = 8500
   to_port           = 8500
   source_security_group_id   = "${aws_security_group.consul_client.id}"
+  description               = "Internal consul cluster SG"
 }
 
 # DNS Interface (Default 8600) - TCP. Used to resolve DNS queries on TCP and UDP.
@@ -133,6 +143,7 @@ resource "aws_security_group_rule" "dns_interface_tcp" {
   from_port         = 8600
   to_port           = 8600
   source_security_group_id   = "${var.consul_sg_group}"
+  description               = "Vault cluster SG"
 }
 
 resource "aws_security_group_rule" "dns_interface_tcp_internal" {
@@ -144,6 +155,7 @@ resource "aws_security_group_rule" "dns_interface_tcp_internal" {
   from_port         = 8600
   to_port           = 8600
   source_security_group_id   = "${aws_security_group.consul_client.id}"
+  description               = "Internal consul cluster SG"
 }
 
 
@@ -157,6 +169,7 @@ resource "aws_security_group_rule" "dns_interface_udp" {
   from_port         = 8600
   to_port           = 8600
   source_security_group_id   = "${var.consul_sg_group}"
+  description               = "Vault/Consul cluster SG"
 }
 resource "aws_security_group_rule" "dns_interface_udp_internal" {
   count = "${var.create ? 1 : 0}"
@@ -167,6 +180,7 @@ resource "aws_security_group_rule" "dns_interface_udp_internal" {
   from_port         = 8600
   to_port           = 8600
   source_security_group_id   = "${aws_security_group.consul_client.id}"
+  description               = "Internal consul cluster SG"
 }
 # All outbound traffic - TCP.
 resource "aws_security_group_rule" "outbound_tcp" {
